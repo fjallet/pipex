@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 13:02:15 by fjallet           #+#    #+#             */
-/*   Updated: 2022/07/20 16:35:29 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/05 17:27:18 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	free_tab_int(int **tab, int taille)
 	while (i < taille)
 	{
 		free(tab[i]);
+		i++;
 	}
 	free(tab);
 }

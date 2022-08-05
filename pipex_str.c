@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 14:57:38 by fjallet           #+#    #+#             */
-/*   Updated: 2022/07/20 11:59:34 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/05 17:25:48 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 size_t	ft_strlen(char *str)
 {
 	size_t	i;
-	
+
 	i = 0;
 	if (!str)
 		return (0);
@@ -65,4 +65,21 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	res[i + j] = '\0';
 	return (res);
+}
+
+char	*ft_strlcpy(char *dst, char *src)
+{
+	int		i;
+
+	i = 0;
+	if (dst)
+		free(dst);
+	dst = malloc(sizeof(char) * (strlen(src) + 1));
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }

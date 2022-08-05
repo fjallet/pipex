@@ -6,20 +6,22 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:49:44 by fjallet           #+#    #+#             */
-/*   Updated: 2022/07/20 16:32:16 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/05 17:55:09 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 int	first_cmd(t_vars *vars, char **env)
-{
+{	
+	char	**cmd;
+
 	vars->fd = open(vars->infile, O_RDONLY);
-	if (vars->fd == -1)
+	if (pipe(vars->pipe[0]) == -1)
 		return (-1);
-	pipe(vars->pipe[0]);
 	vars->pid = fork();
-	if (vars->pid == -1)
+	cmd = check_cmd(vars, vars->cmd[0]);
+	if (vars->pid == -1 || !cmd || vars->fd == -1)
 		return (-1);
 	else if (vars->pid == 0)
 	{
@@ -28,54 +30,61 @@ int	first_cmd(t_vars *vars, char **env)
 		close(vars->fd);
 		close(vars->pipe[0][1]);
 		close(vars->pipe[0][0]);
-		execve(vars->cmd[0], &vars->cmd[0], env);
+		if (execve(cmd[0], &cmd[0], env) == -1)
+			perror("execve");
 	}
-	else if (vars->pid != 0 && vars->pid != -1)
-	{
-		close(vars->fd);
-		close(vars->pipe[0][1]);
-	}
+	free_tab(cmd);
+	close(vars->fd);
+	close(vars->pipe[0][1]);
+	//wait(NULL);
 	return (0);
 }
 
 int	mid_cmd(t_vars *vars, char **env, int i)
 {
+	char	**cmd;
+
 	if (pipe(vars->pipe[i]) == -1)
 		return (-1);
 	vars->pid = fork();
-	if (vars->pid == -1)
+	cmd = check_cmd(vars, vars->cmd[0]);
+	if (vars->pid == -1 || !cmd)
 		return (-1);
 	else if (vars->pid == 0)
 	{
-		if (dup2(vars->pipe[i - 1][0], 0) == -1 || dup2(vars->pipe[i][1], 1) == -1)
+		if (dup2(vars->pipe[i - 1][0], 0) == -1 || \
+		dup2(vars->pipe[i][1], 1) == -1)
 			return (-1);
 		close(vars->pipe[i - 1][0]);
 		close(vars->pipe[i][1]);
 		close(vars->pipe[i][0]);
-		execve(vars->cmd[i], &vars->cmd[i], env);
+		if (execve(cmd[0], &cmd[0], env) == -1)
+			perror("execve");
 	}
-	else if (vars->pid != 0 && vars->pid != -1)
-	{
-		close(vars->pipe[i - 1][0]);
-		close(vars->pipe[i][1]);
-	}
+	free_tab(cmd);
+	close(vars->pipe[i - 1][0]);
+	close(vars->pipe[i][1]);
+	//wait(NULL);
 	return (0);
 }
 
 int	last_cmd(t_vars *vars, int i)
 {
-	int 	fd;
+	int		fd;
 	int		num;
 	char	buf[1000];
 
+	num = 1000;
 	fd = open(vars->outfile, O_CREAT | O_RDWR, S_IRWXU);
 	if (fd == -1)
 		return (-1);
-	num = 1;
+	num = 1000;
 	while (num > 0)
 	{
 		num = read(vars->pipe[i][0], buf, 1000);
-		write(fd, buf, strlen(buf));
+		//ft_printf("%i\n", num);
+		//ft_printf("%s\n", buf);
+		write(fd, buf, num);
 	}
 	close(vars->pipe[i][0]);
 	close(fd);
