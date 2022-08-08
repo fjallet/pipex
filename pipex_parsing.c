@@ -6,13 +6,13 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:40:27 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/05 17:26:58 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/08 17:33:57 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_parsing(t_vars *vars, char **argc)
+int	ft_parsing(t_vars *vars, char **argc)
 {
 	int	i;
 	int	j;
@@ -21,6 +21,8 @@ void	ft_parsing(t_vars *vars, char **argc)
 	vars->infile = argc[1];
 	vars->outfile = argc[vars->argv - 1];
 	vars->cmd = malloc(sizeof(char *) * vars->argv - 1);
+	if (!(vars->cmd))
+		return (-1);
 	while (i < vars->argv - 1)
 	{
 		j = 0;
@@ -34,33 +36,35 @@ void	ft_parsing(t_vars *vars, char **argc)
 		i++;
 	}
 	vars->cmd[i - 2] = NULL;
+	return (0);
 }
 
 char	*ft_fullpath(char *path, char *file)
 {	
 	char	*temp;
 
-	temp = ft_strjoin(path, "/");
+	temp = ft_pipex_strjoin(path, "/");
 	if (!temp)
 		return (NULL);
-	path = ft_strjoin(temp, file);
+	path = ft_pipex_strjoin(temp, file);
 	free(temp);
 	return (path);
 }
 
-void	ft_path(t_vars *vars, char **env)
+int	ft_path(t_vars *vars, char **env)
 {
 	int	i;
 
 	i = -1;
-	while (env[++i])
+	while (env[i + 1] && env[++i])
 	{
 		if (strncmp(env[i], "PATH", 4) == 0)
 		{
 			vars->paths = ft_split(env[i] + 5, ':');
-			return ;
+			return (0);
 		}
 	}
+	return (-1);
 }
 
 /*int	check_cmd(t_vars *vars)
@@ -100,6 +104,8 @@ char	**check_cmd(t_vars *vars, char *cmd)
 	char	*temp;
 	char	**cmdf;
 
+	if (!cmd || cmd[0] == '\0')
+		return (NULL);
 	cmdf = ft_split(cmd, ' ');
 	i = 0;
 	while (vars->paths[i])
@@ -111,7 +117,11 @@ char	**check_cmd(t_vars *vars, char *cmd)
 		i++;
 	}
 	if (access(cmdf[0], F_OK | X_OK) == -1)
+	{
+		perror("access");
+		free_tab(cmdf);
 		return (NULL);
+	}
 	return (cmdf);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 16:30:19 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/05 17:25:33 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/08 17:26:33 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ typedef struct s_vars
 }				t_vars;
 
 //pipex_parsing
-void	ft_parsing(t_vars *vars, char **argc);
+int		ft_parsing(t_vars *vars, char **argc);
 char	*ft_fullpath(char *path, char *file);
-void	ft_path(t_vars *vars, char **env);
+int		ft_path(t_vars *vars, char **env);
 char	**check_cmd(t_vars *vars, char *cmd);
 int		setup_pipes(t_vars *vars);
 
 //pippex_str
-size_t	ft_strlen(char *str);
+//size_t	ft_strlen(char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_pipex_strjoin(char *s1, char *s2);
 char	*ft_strlcpy(char *dst, char *src);
+int		caract_find(char *str, char c);
 
 //split
 char	**ft_split(char const *s, char c);
@@ -63,8 +64,22 @@ int		first_cmd(t_vars *vars, char **env);
 int		mid_cmd(t_vars *vars, char **env, int i);
 int		last_cmd(t_vars *vars, int i);
 
+//gnl
+char	*get_next_line(int fd, int clear);
+char	*ft_strdup(char *s1);
+size_t	ft_strchr(char *s, char c);
+int		ft_endfree(char *rst);
+
+//gnl_utils
+char	*ft_strtrim2(char *old);
+char	*ft_strtrim1(char *old);
+char	*ft_strjoin(char *old, char *src);
+size_t	ft_strchrlen(char *s, char c);
+size_t	ft_strlen(char *s);
+
 //pipex
 int		vars_init(t_vars *vars, int argv, char **argc, char **env);
 int		pipex(t_vars *vars, char **env);
+void	here_doc(t_vars *vars);
 
 #endif

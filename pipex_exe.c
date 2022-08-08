@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:49:44 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/05 17:55:09 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/08 16:36:58 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	first_cmd(t_vars *vars, char **env)
 {	
 	char	**cmd;
 
-	vars->fd = open(vars->infile, O_RDONLY);
 	if (pipe(vars->pipe[0]) == -1)
 		return (-1);
 	vars->pid = fork();
@@ -47,7 +46,7 @@ int	mid_cmd(t_vars *vars, char **env, int i)
 	if (pipe(vars->pipe[i]) == -1)
 		return (-1);
 	vars->pid = fork();
-	cmd = check_cmd(vars, vars->cmd[0]);
+	cmd = check_cmd(vars, vars->cmd[i]);
 	if (vars->pid == -1 || !cmd)
 		return (-1);
 	else if (vars->pid == 0)
@@ -75,15 +74,18 @@ int	last_cmd(t_vars *vars, int i)
 	char	buf[1000];
 
 	num = 1000;
+	if (ft_strncmp(vars->infile, "here_doc", 8) != 0)
+		unlink(vars->outfile);
 	fd = open(vars->outfile, O_CREAT | O_RDWR, S_IRWXU);
 	if (fd == -1)
 		return (-1);
 	num = 1000;
+	while (num == 1000)
+		num = read(fd, buf, 1000);
+	num = 1000;
 	while (num > 0)
 	{
 		num = read(vars->pipe[i][0], buf, 1000);
-		//ft_printf("%i\n", num);
-		//ft_printf("%s\n", buf);
 		write(fd, buf, num);
 	}
 	close(vars->pipe[i][0]);

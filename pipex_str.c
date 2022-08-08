@@ -6,13 +6,13 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 14:57:38 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/05 17:25:48 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/08 16:35:09 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-size_t	ft_strlen(char *str)
+/*size_t	ft_strlen(char *str)
 {
 	size_t	i;
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
-}
+}*/
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -40,14 +40,14 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (cs1[i] - cs2[i]);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_pipex_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
 	char	*res;
 
 	if (!s1)
-		return (0);
+		return (s2);
 	res = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!res)
 		return (0);
@@ -82,4 +82,20 @@ char	*ft_strlcpy(char *dst, char *src)
 	}
 	dst[i] = '\0';
 	return (dst);
+}
+
+int	caract_find(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
