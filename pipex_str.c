@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 14:57:38 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/08 16:35:09 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/13 12:07:42 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,20 @@ int	caract_find(char *str, char c)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_isonlyspace(char *cmd)
+{
+	int	i;
+
+	if (!cmd)
+		return (1);
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
 }

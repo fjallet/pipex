@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_parsing.c                                    :+:      :+:    :+:   */
+/*   pipex_parsing_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 12:40:27 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/13 14:53:14 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/13 13:10:31 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,26 @@ int	ft_parsing(t_vars *vars, char **argc)
 {
 	int	i;
 	int	j;
+	int	k;
 
-	i = 2;
-	vars->infile = argc[1];
-	vars->outfile = argc[vars->argv - 1];
+	i = 1;
+	k = 0;
 	vars->cmd = malloc(sizeof(char *) * vars->argv - 1);
 	if (!(vars->cmd))
 		return (-1);
-	while (i < vars->argv - 1)
+	if (ft_strncmp(vars->infile, "here_doc", ft_strlen(vars->infile)) == 0 \
+	&& i++ == 1)
+		vars->limiter = argc[2];
+	while (++i < vars->argv - 1)
 	{
-		j = 0;
-		vars->cmd[i - 2] = malloc(sizeof(char) * strlen(argc[i]) + 1);
-		while (argc[i][j] != '\0')
-		{
-			vars->cmd[i - 2][j] = argc[i][j];
-			j++;
-		}
-		vars->cmd[i - 2][j] = '\0';
-		i++;
+		j = -1;
+		vars->cmd[k] = malloc(sizeof(char) * strlen(argc[i]) + 1);
+		while (argc[i][++j] != '\0')
+			vars->cmd[k][j] = argc[i][j];
+		vars->cmd[k][j] = '\0';
+		k++;
 	}
-	vars->cmd[i - 2] = NULL;
+	vars->cmd[k] = NULL;
 	return (0);
 }
 
@@ -104,7 +104,7 @@ char	**check_cmd(t_vars *vars, char *cmd)
 	char	*temp;
 	char	**cmdf;
 
-	if (cmd[0] == '\0' || ft_isonlyspace(cmd) == 1)
+	if (!cmd || cmd[0] == '\0' || ft_isonlyspace(cmd) == 1)
 		return (NULL);
 	cmdf = ft_split(cmd, ' ');
 	i = 0;
@@ -117,7 +117,11 @@ char	**check_cmd(t_vars *vars, char *cmd)
 		i++;
 	}
 	if (access(cmdf[0], F_OK | X_OK) == -1)
+	{
 		perror("access");
+		free_tab(cmdf);
+		return (NULL);
+	}
 	return (cmdf);
 }
 

@@ -6,8 +6,8 @@ HEADERS = pipex.h
 
 SRCS = pipex.c pipex_str.c pipex_parsing.c ft_split.c pipex_free.c pipex_exe.c gnl.c gnl_utils.c
 
-BONUS_SRCS = pipex_bonus.c pipex_str.c pipex_parsing.c ft_split.c pipex_free.c pipex_exe.c gnl.c \
-		gnl_utils.c
+BONUS_SRCS = pipex_bonus.c pipex_str.c pipex_parsing_bonus.c ft_split.c pipex_free.c \
+		pipex_exe_bonus.c gnl.c gnl_utils.c
 
 OBJETS = ${SRCS:%.c=./.build/%.o}
 
@@ -22,11 +22,11 @@ FLAGS = -Wall -Werror -Wextra
 ./.build/%.o : %.c
 	${CC} -I. -o $@ -c $? ${FLAGS}
 
-all: 
+all:
 	mkdir -p .build
 	make ${NAME}
 
-b: 
+b:
 	mkdir -p .build
 	make ${NAME_BONUS}
 

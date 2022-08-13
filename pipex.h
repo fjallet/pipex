@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 16:30:19 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/08 17:26:33 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/13 15:17:53 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_vars
 	int		numcmd;
 	pid_t	pid;
 	int		witness;
+	char	*limiter;
 }				t_vars;
 
 //pipex_parsing
@@ -50,6 +51,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_pipex_strjoin(char *s1, char *s2);
 char	*ft_strlcpy(char *dst, char *src);
 int		caract_find(char *str, char c);
+int		ft_isonlyspace(char *cmd);
 
 //split
 char	**ft_split(char const *s, char c);
@@ -63,6 +65,7 @@ void	free_tab_int(int **tab, int taille);
 int		first_cmd(t_vars *vars, char **env);
 int		mid_cmd(t_vars *vars, char **env, int i);
 int		last_cmd(t_vars *vars, int i);
+int		ft_unlink(t_vars *vars, int i);
 
 //gnl
 char	*get_next_line(int fd, int clear);

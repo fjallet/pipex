@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_exe.c                                        :+:      :+:    :+:   */
+/*   pipex_exe_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:49:44 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/13 15:43:01 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/13 15:44:01 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int	mid_cmd(t_vars *vars, char **env, int i)
 	if (pipe(vars->pipe[i]) == -1)
 		return (-1);
 	cmd = check_cmd(vars, vars->cmd[i]);
-	if (access(cmd[0], F_OK | X_OK) != -1)
+	if (cmd && access(cmd[0], F_OK | X_OK) != -1)
 		vars->pid = fork();
-	if (vars->pid == -1)
+	if (vars->pid == -1 || !cmd)
 		return (-1);
 	else if (vars->pid == 0)
 	{
@@ -75,12 +75,8 @@ int	last_cmd(t_vars *vars, int i)
 	int		num;
 	char	buf[1000];
 
-	num = 1000;
-	if (unlink(vars->outfile) == -1 && access(vars->infile, R_OK | F_OK) != -1)
-	{
-		close(vars->pipe[i][0]);
+	if (ft_unlink(vars, i) == -1)
 		return (0);
-	}
 	fd = open(vars->outfile, O_CREAT | O_RDWR, S_IRWXU);
 	if (fd == -1)
 		return (-1);
