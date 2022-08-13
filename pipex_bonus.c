@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 16:29:16 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/13 15:47:04 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/13 15:53:39 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ int	main(int argv, char **argc, char **env)
 	t_vars	vars;
 
 	if (argv < 5)
+		return (0);
+	if (ft_strncmp(argc[1], "here_doc", ft_strlen(argc[1])) == 0 && \
+	argv == 5)
 		return (0);
 	if (ft_path(&vars, env) == -1)
 		return (0);
