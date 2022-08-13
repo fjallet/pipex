@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 14:57:38 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/13 12:07:42 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/13 16:03:35 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	unsigned char	*cs1;
 	unsigned char	*cs2;
 
+	if (n == 0)
+		return (1);
 	cs1 = (unsigned char *)s1;
 	cs2 = (unsigned char *)s2;
 	i = 0;
