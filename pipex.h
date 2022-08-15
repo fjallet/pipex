@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 16:30:19 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/13 15:17:53 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/15 18:11:14 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_vars
 	int		fd;
 	int		argv;
 	int		numcmd;
-	pid_t	pid;
+	pid_t	*pid;
 	int		witness;
 	char	*limiter;
 }				t_vars;
@@ -64,7 +64,7 @@ void	free_tab_int(int **tab, int taille);
 //pipex_exe
 int		first_cmd(t_vars *vars, char **env);
 int		mid_cmd(t_vars *vars, char **env, int i);
-int		last_cmd(t_vars *vars, int i);
+int		last_cmd(t_vars *vars, int i, char **env);
 int		ft_unlink(t_vars *vars, int i);
 
 //gnl
