@@ -6,11 +6,27 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 16:29:16 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/13 16:03:58 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/16 14:49:50 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	setup_pid(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	vars->pid = malloc(sizeof(pid_t) * vars->numcmd);
+	if (!(vars->pid))
+		return (-1);
+	while (i < vars->numcmd)
+	{
+		vars->pid[i] = 56;
+		i++;
+	}
+	return (0);
+}
 
 int	vars_init(t_vars *vars, int argv, char **argc, char **env)
 {
@@ -19,9 +35,10 @@ int	vars_init(t_vars *vars, int argv, char **argc, char **env)
 	vars->numcmd = argv - 3;
 	vars->infile = argc[1];
 	vars->outfile = argc[vars->argv - 1];
-	vars->pid = 1;
 	if (ft_strncmp(vars->infile, "here_doc", ft_strlen(vars->infile)) == 0)
 		vars->numcmd--;
+	if (setup_pid(vars) == -1)
+		return (-1);
 	if (ft_parsing(vars, argc) == -1)
 		return (-1);
 	if (setup_pipes(vars) == -1)
@@ -47,13 +64,16 @@ int	pipex(t_vars *vars, char **env)
 		close(vars->pipe[0][1]);
 	if (ft_strncmp(vars->infile, "here_doc", ft_strlen(vars->infile)) == 0)
 		unlink(vars->infile);
-	while (++i < vars->numcmd)
+	while (++i < vars->numcmd - 1)
 	{
 		if (mid_cmd(vars, env, i) == -1)
 			return (-1);
 	}
-	if (last_cmd(vars, i - 1) == -1)
+	if (last_cmd(vars, i, env) == -1)
 		return (-1);
+	i = 0;
+	while (i < vars->numcmd)
+		waitpid(vars->pid[i++], NULL, 0);
 	return (0);
 }
 

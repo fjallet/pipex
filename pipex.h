@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 16:30:19 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/15 18:11:14 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/16 14:58:52 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	free_tab_int(int **tab, int taille);
 int		first_cmd(t_vars *vars, char **env);
 int		mid_cmd(t_vars *vars, char **env, int i);
 int		last_cmd(t_vars *vars, int i, char **env);
-int		ft_unlink(t_vars *vars, int i);
+int		ft_unlink(t_vars *vars);
+int		close_erpipe(t_vars *vars, int fd, char **cmd, int i);
 
 //gnl
 char	*get_next_line(int fd, int clear);

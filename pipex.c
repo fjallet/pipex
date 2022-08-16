@@ -6,7 +6,7 @@
 /*   By: fjallet <fjallet@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 16:29:16 by fjallet           #+#    #+#             */
-/*   Updated: 2022/08/15 20:37:16 by fjallet          ###   ########.fr       */
+/*   Updated: 2022/08/16 14:27:24 by fjallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	pipex(t_vars *vars, char **env)
 		waitpid(vars->pid[i], NULL, 0);
 		i++;
 	}
-	free(vars->pid);
 	return (0);
 }
 
